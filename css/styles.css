@@ -1,0 +1,39 @@
+/* TIPO */
+header{background-color: #fff;}
+aside{background-color: #fff;}
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, san-serif;
+    line-height: 1.5;
+    color: #1d1d1f;
+    background-color: #f5f5f7;
+
+}
+h1 { color: #0066cc; font-size: 2rem;}
+h2{ font-size: 1.5rem;}
+h3{font-size: 1.125rem;}
+h1,h2,h3 {line-height: 1.2;} 
+figcaption{
+    font-size: 0.75rem; 
+    font-weight: 600;
+    color: rgb(110, 110, 115);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+article{text-align: center; background-color: #fff;}
+a {color: #0066cc;}
+strong {color : hsl(146 85% 26%);}
+button{
+    background-color: #0066cc;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* CLASE */
+.destacado{background-color: #e8f1fb;}
+/* ID */
+#compra{background-color: #fff;}
+/* DESCENDIENTE E HIJO DIRECTO */
+nav > ul {list-style: none;}
+nav a {text-decoration: none; font-weight: 600;}
+/* ATRIBUTO */
+button[type="submit"]{background-color: hsl(146 85% 26%); font-size: 1.125rem;}
