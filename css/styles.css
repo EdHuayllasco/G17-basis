@@ -26,14 +26,12 @@ header h1 {
 aside{
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
-    align-items: center;
+    align-items: stretch;
     gap: 8px;
     background-color: #fff;
     border: 1px solid #d2d2d7;
     border-radius: 12px;
     padding: 1.5rem;
-    margin-bottom: 1.5rem;
 }
 aside h2, aside h3, aside ol {margin: 0;}
 aside h3 {margin-top: 16px;}
@@ -43,6 +41,12 @@ aside h3 {margin-top: 16px;}
 } */
 aside ol{
     padding-left: 1.5rem;
+}
+aside table{
+    font-size: 0.85rem;
+}
+aside th, aside td{
+    padding: 6px 8px;
 }
 table{
     width: 100%;
@@ -73,11 +77,12 @@ body {
     display: grid;
     grid-template-columns: 300px minmax(0,1fr);
     grid-template-areas:
-        "cabecera cabecera cabecera"
-        "lateral lateral lateral"
-        "contenido contenido contenido"
-        "pie pie pie";
+        "cabecera cabecera"
+        "lateral contenido"
+        "pie pie";
     gap: 24px;
+    min-height: 100vh;
+    grid-template-rows: auto 1fr auto;
 }
 /* id -> clase -> etiqueta (1) */
 h1 { color: #0066cc; font-size: 2rem;} 
@@ -305,5 +310,45 @@ footer address{
 }
 header{grid-area: cabecera;}
 main{grid-area: contenido;}
-aside{grid-area: lateral;}
+aside{grid-area: lateral; align-self: start;}
 footer{grid-area: pie;}
+.envio{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+}
+#compra .envio label,
+#compra .envio input,
+#compra .envio select,
+#compra .envio textarea {
+    flex-basis: 100%;
+}
+.campo-ancho { 
+    grid-column: 1/-1;
+}
+
+@media (max-width: 600px){
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+    body{
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: 
+        "cabecera"
+        "lateral"
+        "contenido"
+        "pie";
+        grid-auto-rows: auto auto 1fr auto;
+    }
+    .destacado {
+        grid-column: auto;
+        grid-row: auto;
+    }
+    .envio {
+        grid-template-columns: 1fr;
+    }
+    .productos {
+        grid-auto-rows: auto;
+    }
+}
