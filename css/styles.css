@@ -1,9 +1,42 @@
+:root{
+    color-scheme: light dark;
+
+    --marca: #0066cc;   /* azul de la marca: titulos, enlaces, botones, foco */
+    --sobre-marca: #fff;
+    --exito: hsl(146 85% 26%);
+    --error: #c0392b;
+    --fondo: #f5f5f7;
+    --fondo-suave: #e5e5ea;
+    --tarjeta: #fff;
+    --resalte: #1d1d1f;
+    --texto-suave: #6e6e73;
+    --borde: #d2d2d7;
+
+    --radio: 12px;
+    --espacio: 1rem;
+    --fuente : system-ui, -apple-system, "Segoe UI", Roboto, san-serif;
+}
+@media (prefers-color-scheme: dark) {
+    :root{
+        --marca: #3d9bff;
+        --sobre-marca: #0b1220;
+        --exito: #30d158;
+        --error : #ff8b5e;
+        --fondo: #111114;
+        --fondo-suave: #2c2c2e;
+        --tarjeta : #1d1d1f;
+        --resalte: #0e2439;
+        --texto: #f5f5f7;
+        --texto-suave: #a1a1a6;
+        --borde: #3a3a3c;
+    }
+}
 /* TIPO */
 header{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #fff;
+    background-color: var(--tarjeta);
     padding: 1rem 1.25rem;
     border-radius: 12px;
     margin-bottom: 1.5rem;
@@ -17,8 +50,8 @@ header h1 {
     align-items: center ;
     width: 140px;
     height: 44px;
-    background-color: #0066cc;
-    color: #fff;
+    background-color: var(--marca);
+    color: var(--sobre-marca);
     border-radius: 8px;
     font-size: 20px;
     margin: 0;
@@ -28,8 +61,8 @@ aside{
     flex-direction: column;
     align-items: stretch;
     gap: 8px;
-    background-color: #fff;
-    border: 1px solid #d2d2d7;
+    background-color: var(--tarjeta);
+    border: 1px solid var(--borde);
     border-radius: 12px;
     padding: 1.5rem;
     overflow-x: auto;
@@ -59,22 +92,22 @@ caption{
     margin-bottom: 0.5rem;
 }
 th, td {
-    border: 1px solid #d2d2d7;
+    border: 1px solid var(--borde);
     padding: 0.5rem 0.75rem;
     text-align: left;
 }
 th {
-    background-color: #e5e5ea;
+    background-color: var(--fondo-suave);
 }
 body {
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, san-serif;
     line-height: 1.5;
-    color: #1d1d1f;
-    background-color: #f5f5f7;
+    color: var(--texto);
+    background-color: var(--fondo);
     box-sizing: border-box;
     max-width: 1100px;
     margin-inline: auto; 
-    padding: 1rem;
+    padding: var(--espacio);
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas: 
@@ -87,14 +120,14 @@ body {
     min-height: 100vh;
 }
 /* id -> clase -> etiqueta (1) */
-h1 { color: #0066cc; font-size: 2rem;} 
+h1 { color: var(--marca); font-size: 2rem;} 
 h2{ font-size: clamp(1.25rem, 1rem + 1,2vw, 1.5rem);}
 h2::after{
     content: "";
     display: block;
     width: 3rem;
     height: 3px;
-    background-color: #0066cc;
+    background-color: var(--marca);
     margin-top: 0.25rem;
 }
 h3{font-size: 1.125rem;}
@@ -112,8 +145,8 @@ article{
     display: flex;
     flex-direction: column;
     text-align: center; 
-    background-color: #fff;
-    border: 1px solid #d2d2d7;
+    background-color: var(--tarjeta);
+    border: 1px solid var(--borde);
     border-radius: 12px;
     padding: 1rem;
 }
@@ -132,20 +165,21 @@ article h3 {
 article p {
     margin: 0 0 0.75rem;
 }
-a {color: #0066cc;}
-strong {color : hsl(146 85% 26%);}
+a {color: var(--marca);}
+strong {color : var(--exito);}
 button{
-    background-color: #0066cc;
-    color: #fff;
+    background-color: var(--marca);
+    color: var(--sobre-marca);
     cursor: pointer;
     border: 0;
     border-radius: 999px;
     padding: 0.6em 1.2em;
+    transition: transform 1s ease, filter 2s ease;
 }
 
 /* ID */
 #compra{
-    background-color: #fff;
+    background-color: var(--tarjeta);
     border-radius: 12px;
     padding: 1.5rem;
     margin-top: 24px;
@@ -165,7 +199,8 @@ button{
     flex: 0 0 180px;
 }
 fieldset{
-    border: 1px solid #d2d2d7;
+    --radio: 8px;
+    border: 1px solid var(--borde);
     border-radius: 10px;
     padding: 1rem;
     margin-bottom: 1rem;
@@ -186,8 +221,10 @@ legend {
     flex: 0 1 320px;
     min-width: 0;
     padding: 0.5rem 0.75rem;
-    border: 1px solid #d2d2d7;
-    border-radius: 8px;
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    background-color: var(--fondo);
+    color: var(--texto);
 }
 #compra input[type="radio"], 
 #compra input[type="checkbox"] {
@@ -200,7 +237,7 @@ legend {
 #compra input:user-invalid,
 #compra select:user-invalid,
 #compra textarea:user-invalid {
-    border-color: #c0392b;
+    border-color: var(--error);
 }
 /* DESCENDIENTE E HIJO DIRECTO */
 nav > ul {
@@ -213,7 +250,7 @@ nav > ul {
 
 nav a {text-decoration: none; font-weight: 600;}
 /* ATRIBUTO */
-button[type="submit"]{background-color: hsl(146 85% 26%); font-size: 1.125rem;}
+button[type="submit"]{background-color: var(--exito); font-size: 1.125rem;}
 
 
 /* PSEUDO-CLASES */
@@ -225,7 +262,7 @@ button:hover{
     filter: brightness(1.1);
 }
 tbody tr:nth-child(even) {
-    background-color: #f5f5f7;
+    background-color: var(--fondo);
 }
 tbody tr:hover{
     background-color: rgba(0 , 102, 204, 0.08);
@@ -235,8 +272,16 @@ button:focus-visible,
 select:focus-visible,
 input:focus-visible,
 textarea:focus-visible{
-    outline: 3px solid #0066cc;
+    outline: 3px solid var(--marca);
     outline-offset: 2px;
+}
+button:hover,
+button:focus-visible {
+    filter: brightness(1.8);
+    transform: translateY(10px);
+}
+button:active{
+    transform: translateY(0) scale(1.25);
 }
 ::placeholder { 
     color: #8e8e93;
@@ -246,12 +291,12 @@ textarea:focus-visible{
     content: "Destacado";
     align-self: center;
     display: inline-block;
-    color: #0066cc;
+    color: var(--marca);
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    border: 1px solid #0066cc;
+    border: 1px solid var(--marca);
     border-radius: 999px;
     padding: 0.15rem 0.6rem;
     margin-bottom: 0.5rem;
@@ -270,7 +315,7 @@ figure{
 
 .destacado {
     background-color: #e8f1fb; 
-    border-color: #0066cc;
+    border-color: var(--marca);
     border-width: 2px;
     justify-content: center;
 }
@@ -288,9 +333,9 @@ footer {
     gap: 16px;
     margin-top: 2rem;
     padding: 1.5rem 0;
-    border-top: 1px solid #d2d2d7;
+    border-top: 1px solid var(--borde);
     text-align: center;
-    color: #6e6e73;
+    color: var(--texto-suave);
     font-size: 0.875rem;
 }
 footer p,
