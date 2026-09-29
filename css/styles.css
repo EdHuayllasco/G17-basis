@@ -31,31 +31,6 @@
         --borde: #3a3a3c;
     }
 }
-/* TIPO */
-header{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: var(--tarjeta);
-    padding: 1rem 1.25rem;
-    border-radius: 12px;
-    margin-bottom: 1.5rem;
-    gap: 16px;
-}
-/* id ? no, clase ? no, selector -> Si, tenemos header-h1 */
-header h1 {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center ;
-    width: 140px;
-    height: 44px;
-    background-color: var(--marca);
-    color: var(--sobre-marca);
-    border-radius: 8px;
-    font-size: 20px;
-    margin: 0;
-}
 aside{
     display: flex;
     flex-direction: column;
@@ -149,6 +124,11 @@ article{
     border: 1px solid var(--borde);
     border-radius: 12px;
     padding: 1rem;
+    transition: transform 2s ease, box-shadow 2s ease;
+}
+article:hover{
+    transform : translateY(-15px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.40);
 }
 article img {
     height: auto;
@@ -165,7 +145,6 @@ article h3 {
 article p {
     margin: 0 0 0.75rem;
 }
-a {color: var(--marca);}
 strong {color : var(--exito);}
 button{
     background-color: var(--marca);
@@ -242,22 +221,12 @@ legend {
 /* DESCENDIENTE E HIJO DIRECTO */
 nav > ul {
     list-style: none; 
-    padding: 0; 
-    display: flex;
-    /* horizontal y 20 pixeles verticales gap : 10px 20px */
-    gap: 20px; 
+    padding: 0;
 }
 
-nav a {text-decoration: none; font-weight: 600;}
 /* ATRIBUTO */
 button[type="submit"]{background-color: var(--exito); font-size: 1.125rem;}
 
-
-/* PSEUDO-CLASES */
-
-nav a:hover{
-    text-decoration: underline;
-}
 button:hover{
     filter: brightness(1.1);
 }
@@ -300,6 +269,11 @@ button:active{
     border-radius: 999px;
     padding: 0.15rem 0.6rem;
     margin-bottom: 0.5rem;
+    animation: latido 2s ease-in-out infinite alternate;
+}
+@keyframes latido {
+    from { transform: scale(1);}
+    to {transform: scale(1.4);}
 }
 a[target="_blank"]::after{
     content: " ->";
@@ -353,6 +327,13 @@ footer address{
     /* primero filas / columnas */
     gap: 24px 16px;
 }
+.productos article {
+    animation: aparecer 2s ease-out backwards;
+}
+@keyframes aparecer {
+    from {opacity: 0; transform: translateY(12px);}
+    to {opacity: 1; transform: translateY(0);}
+}
 header{grid-area: cabecera;}
 main{grid-area: contenido;}
 aside{grid-area: lateral; align-self: start;}
@@ -371,7 +352,25 @@ footer{grid-area: pie;}
 .campo-ancho { 
     grid-column: 1/-1;
 }
-
+.beneficios{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(150px,100%),1fr));
+    gap: var(--espacio);
+    margin-bottom: 24px;
+}
+.beneficios p{
+    margin: 0;
+    color: va(--texto-suave);
+    font-size: 0.85rem;
+}
+.beneficios .icono {
+    font-size: 1.75rem;
+    margin: 0 0 0.25rem;
+}
+.beneficios h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1rem;
+}
 @media(min-width: 48em) {
     header {
         flex-direction: row;
@@ -403,4 +402,10 @@ footer{grid-area: pie;}
     body {
         max-width: 1280px;
     }
+}
+@media (prefers-reduced-motion: reduce) {
+    .productos article,
+    .destacado::before {animation : none}
+    article,
+    button { transition: none;}
 }
