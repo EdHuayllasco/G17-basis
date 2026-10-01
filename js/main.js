@@ -152,3 +152,81 @@ carrito.unshift("iPad Mini 2021");
 console.log(carrito[0]);
 carrito.shift();
 console.log(carrito);
+
+const nombres = productos.map(producto => producto.nombre);
+console.log(nombres);
+
+const preciosFormateados = productos.map(p => formatearPrecio(p.precio));
+console.log(preciosFormateados);
+
+const enStock = productos.filter(p => p.stock > 0);
+console.log(enStock)
+
+const laptops = productos.filter(p => p.categoria === "laptops");
+console.log(laptops.length);
+
+const economicos = productos.filter(p => p.precio < 600);
+console.log(economicos.map(p => p.nombre));
+
+const valorDelCatalogo = productos.reduce((suma, p) => suma + p.precio, 0);
+console.log(valorDelCatalogo.toFixed(2));
+
+const valorDeInventario = productos.reduce((suma, p) => suma + p.precio * p.stock, 0);
+console.log(valorDeInventario.toFixed(2));
+
+console.table(productos);
+
+const airpods = productos.find( p => p.nombre === "Airpods Max");
+console.log(airpods.precio);
+
+const inexistente = productos.find(p => p.categoria === "televisores");
+console.log(inexistente?.precio);
+
+const stockcon0 = productos.some(p => p.stock === 0);
+console.log(stockcon0);
+console.log(productos.every(p => p.precio > 400));
+
+console.log(categorias.includes("tablets")); //true
+console.log(categorias.includes("televisores"));
+
+const busqueda = "mac";
+const resultados = productos.filter(p => p.nombre.toLowerCase().includes(busqueda));
+console.log(resultados);
+
+console.log([10, 9 , 100].sort());
+console.log([10, 9 , 100].sort((a , b) => a -b));
+
+const porPrecio = productos.slice().sort((a,b) => a.precio - b.precio);
+console.log(porPrecio.map(p => p.nombre));
+console.log(productos[0].nombre);
+
+//ToSorted.
+
+const disponibles = productos.filter(p => p.stock > 0);
+const masCaro = productos.reduce((mayor, p) => (p.precio > mayor.precio ? p : mayor), productos[0]);
+console.log(masCaro.nombre);
+
+const resumen = {
+    productos : productos.length,
+    disponibles : disponibles.length,
+    agotados : productos.length - disponibles.length,
+    valorDelCatalogo : formatearPrecio(valorDelCatalogo),
+    valorDeInventario : formatearPrecio(valorDeInventario),
+    masCaro : masCaro.nombre,
+    envioGratisDesde: formatearPrecio(ENVIO_GRATIS_DESDE)
+};
+console.table(resumen);
+
+
+for(const producto of productos) {
+    if(producto.stock === 0) {
+        console.warn("Sin stock: " + producto.nombre);
+    }
+}
+
+const pedido = productos.find(p => p.id === 99);
+if(!pedido) { 
+    console.error("No existe un producto con id 99");
+}
+
+console.log("Fin del recorrido clase 07/08");
