@@ -114,3 +114,41 @@ function aplicar(precio, transformacion){
 }
 console.log(aplicar(1000, conDescuento));
 console.log(aplicar(1000,conIGVFlecha));
+
+const productos = [
+    {id: 1, nombre: "Macbook Pro 14", precio: 1999.99, categoria: "laptops", stock: 5, destacada: true},
+    {id: 2, nombre: "Iphone 13 Pro", precio: 1099.99, categoria:"smartphones", stock: 8, destacado: false},
+    {id: 3, nombre: "Ipad Mini 2021", precio: 499.99, categoria: "tablets", stock: 0, destacado:false},
+    {id: 4, nombre: "Airpods Max", precio: 549.99, categoria: "audio", stock: 3, destacado: false},
+];
+
+productos.push(
+    {id: 5, nombre: "Macbook Air 13", precio: 1299.99, categoria: "laptops", stock: 4, destacado: false},
+    {id: 6, nombre: "Iphone 15", precio: 999.99, categoria: "smartphones", stock: 0, destacado: false}
+);
+console.log(productos.length);
+console.log(productos[0].nombre);
+console.log(productos[productos.length-1].nombre);
+
+const macbook = productos[0];
+console.log(macbook.precio);
+console.log(macbook["precio"]);
+const propiedad = "categoria";
+console.log(macbook[propiedad]);
+
+for(const producto of productos){
+    console.log(producto.nombre + " - " + formatearPrecio(producto.precio));
+}
+
+console.table(productos);
+
+const carrito = [];
+carrito.push("Macbook Pro 14");
+carrito.push("Airpods Max");
+console.log(carrito.length);
+carrito.pop();
+console.log(carrito.length);
+carrito.unshift("iPad Mini 2021");
+console.log(carrito[0]);
+carrito.shift();
+console.log(carrito);
