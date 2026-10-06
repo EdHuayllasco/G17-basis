@@ -3,14 +3,14 @@ import formatearPrecio from "./formato.js";
 const CLASES_TARJETA = 
 "tarjeta group flex flex-col text-center " +
 "transition-[transform,box-shadow] duration-200 " +
-"hover:-translate-y-1 hover:shadow-lg dark:hover:ring-1 dark:hover:ring-marca" +
+"hover:-translate-y-1 hover:shadow-lg dark:hover:ring-1 dark:hover:ring-marca " +
 "animate-aparecer motion-reduce:transition-none motion-reduce:animate-none";
 const CLASES_DESTACADA = 
-"justify-center bg-resalte border-marca border-2 md:col-span-2 md:row-span-2" + 
-"before:content-['Destacado'] before:inline-block before:self-center" +
-"before:text-marca before:text-xs before:font-bold before:uppercase" +
-"before:tracking-wider before:border before:border-marca" +
-"before:rounded-full before:px-2.5 before:py-0.5 before:mb-2" +
+"justify-center bg-resalte border-marca border-2 md:col-span-2 md:row-span-2 " + 
+"before:content-['Destacado'] before:inline-block before:self-center " +
+"before:text-marca before:text-xs before:font-bold before:uppercase " +
+"before:tracking-wider before:border before:border-marca " +
+"before:rounded-full before:px-2.5 before:py-0.5 before:mb-2 " +
 "before:animate-latido motion-reduce:before:animate-none";
 
 export const tarjetaProducto = ({destacado, id, imagen, alt, marca, nombre, precio, stock}) => `
