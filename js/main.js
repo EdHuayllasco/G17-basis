@@ -35,3 +35,13 @@ const pintarCatalogo = (lista = productos) => {
     grillaCatalogo.setAttribute("aria-label", `Catalogo con ${lista.length} productos`);
 }
 pintarCatalogo();
+
+console.log("TechCart:  catalogo generado desde el arreglo,", productos.length, "productos");
+console.log(document.querySelectorAll(".tarjeta").length);
+console.log("Tarjeta que existen antes en el HTML", tarjetasAlCargar.length);
+
+// const grid = document.querySelector(("#catalogo-grid"));
+// const antes = grid.querySelector("button");
+// grid.innerHTML = grid.innerHTML
+
+// console.log(antes === grid.querySelector("button"));

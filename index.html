@@ -104,6 +104,7 @@
         <li><a class="text-marca font-semibold no-underline hover:underline" href="#compra">Comprar</a></li>
       </ul>
     </nav>
+    <p id="resumen-carrito" class="font-semibold m-0" role="status" aria-live="polite"></p>
   </header>
 
   <main>
@@ -134,7 +135,16 @@
       </div>
 
     </section>
-
+    <section id="carrito" class="bg-tarjeta rounded-tarjeta p-6 mt-6">
+      <h2 class="titulo-seccion">Tu carrito</h2>
+      <ul id="lista-carrito" class="list-none p-0 m-0"></ul>
+      <p id="total-carrito" class="font-semibold mt-4"></p>
+      <div class="h-2 w-full bg-fondo-suave rounded-full overflow:hidden mt-2" aria-hidden="true">
+        <div id="barra-envio" class="h-full bg-exito w-0"></div>
+      </div>
+      <p id="mensaje-envio" class="text-sm text-texto-suave mt-1"></p>
+      <button id="vaciar" class="boton mt-4" type="button">Vaciar Carrito</button>
+    </section>
     <section id="compra" class="bg-tarjeta rounded-tarjeta p-6 mt-6">
       <h2 class="titulo-seccion">Finalizar compra</h2>
 
