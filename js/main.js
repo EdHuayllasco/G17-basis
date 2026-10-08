@@ -1,30 +1,15 @@
+import { agregarAlCarrito, faltaParaEnvioGratis, guardarCarrito, leerCarrito, olvidarCarrito, quitarDelCarrito, resumenCarrito } from "./carrito.js";
 import {productos } from "./datos.js";
-import { tarjetaProducto } from "./ui.js";
+import formatearPrecio from "./formato.js";
+import { ENVIO_GRATIS_DESDE } from "./tienda.js";
+import { filaCarrito, tarjetaProducto } from "./ui.js";
 
-console.log("document es un", document.nodeName, ". su titulo es:", document.title);
-console.log("El <h1> de la cabera dice", document.querySelector("h1").textContent);
-console.log("Por id, la forma de siempre", document.getElementById("catalogo").tagName);
-
-const tarjetasAlCargar = document.querySelectorAll(".tarjeta");
-console.log("Tarjeta en la pagina recien cargada : " + tarjetasAlCargar.length);
-
-console.log("Query selector all devuelve un arreglo? ", Array.isArray(tarjetasAlCargar));
-console.log("Devuelve un", tarjetasAlCargar.constructor.name);
-
-console.log("Convertida ya se puede recorrer con map",
-    Array.from(tarjetasAlCargar).map(tarjeta => tarjeta.querySelector("h3").textContent));
-
-document.querySelector("h1").textContent = "<b>TechCart</b>";
-document.querySelector("h1").innerHTML = "<b>TechCart</b>";
-
-const primerBeneficio = document.querySelector(".tarjeta h3");
-console.log("TextContent del primer beneficio", primerBeneficio.textContent);
-console.log("Su tarjeta lleva la clase text-center", primerBeneficio.closest(".tarjeta").classList.contains("text-center"));
-
-const enlaceDummy = document.querySelector('a[target=_blank]');
-console.log("getAttribute('href'):", enlaceDummy.getAttribute("href"));
-console.log("la propiedad .href", enlaceDummy.href);
-
+const resumenCabecera = document.querySelector('#resumen-carrito');
+const listaCarrito = document.querySelector('#lista-carrito');
+const totalCarrito = document.querySelector('#total-carrito');
+const barraEnvio = document.querySelector('#barra-envio');
+const mensajeEnvio = document.querySelector('#mensaje-envio');
+const botonVaciar = document.querySelector('#vaciar');
 const grillaCatalogo = document.querySelector("#catalogo-grid");
 
 const pintarCatalogo = (lista = productos) => {
@@ -34,14 +19,89 @@ const pintarCatalogo = (lista = productos) => {
 
     grillaCatalogo.setAttribute("aria-label", `Catalogo con ${lista.length} productos`);
 }
+let carrito = leerCarrito();
+
+const pintarCarrito = () => {
+    const {unidades, subTotal, igv, envio, total}= resumenCarrito(carrito);
+    resumenCabecera.textContent = unidades === 0 ? "Carrito vacio" : `${unidades} producto(s) - ${formatearPrecio(total)}`;
+    listaCarrito.innerHTML = carrito.map(filaCarrito).join("");
+    totalCarrito.textContent = unidades === 0 ? "Todavia no agregaste nada." : 
+        `Subtotal ${formatearPrecio(subTotal)} - IGV ${formatearPrecio(igv)} - ` +
+        `Envio ${formatearPrecio(envio)} - Total ${formatearPrecio(total)}`;
+    botonVaciar.classList.toggle("hidden", unidades === 0);
+    const avance = Math.min((subTotal/ ENVIO_GRATIS_DESDE) * 100, 100);
+    barraEnvio.style.width = `${avance}%`
+
+    const falta = faltaParaEnvioGratis(subTotal);
+    mensajeEnvio.textContent = falta === 0 ? "Tu pedido ya tiene envio gratis." : `Te faltan ${formatearPrecio(falta)} para el envio gratis.`;
+}
+
+grillaCatalogo.addEventListener('click', (evento) => {
+    const boton = evento.target.closest("button[data-accion='agregar']");
+    if(!boton) return;
+
+    const id = Number(boton.dataset.id);
+    const producto = productos.find( p => p.id === id);
+    if(!producto) return;
+
+    carrito = agregarAlCarrito(carrito , producto);
+    guardarCarrito(carrito);
+    pintarCarrito();
+});
+
+listaCarrito.addEventListener('click', (evento) => {
+    const boton = evento.target.closest("button[data-accion='quitar']");
+    if(!boton) return;
+
+    carrito = quitarDelCarrito(carrito, Number(boton.dataset.posicion));
+    guardarCarrito(carrito);
+    pintarCarrito();
+});
+
+botonVaciar.addEventListener('click', () => {
+    carrito = [];
+    olvidarCarrito();
+    pintarCarrito();
+})
+
+const formularioCompra = document.querySelector('#form-compra');
+const estadoPedido = document.querySelector('#estado-pedido');
+
+const mostrarAviso = (mensaje, esError) => {
+    estadoPedido.querySelector("p")?.remove();
+    const aviso = document.createElement("p");
+    aviso.textContent = mensaje;
+    aviso.classList.add("font-semibold", esError ? "text-error" : "text-exito");
+    estadoPedido.append(aviso);
+}
+
+formularioCompra.addEventListener("submit", (evento) => {
+    evento.preventDefault();
+
+    if(!formularioCompra.checkValidity()){
+        formularioCompra.reportValidity();
+        mostrarAviso("Faltan datos por completar. Revisa los campos marcados", true);
+        return;
+    }
+
+    if(carrito.length === 0 ) {
+        mostrarAviso("Tu carrito esta vacio: Agrega al menos un producto antes de confirmar.", true);
+        return;
+    }
+
+    const datos = new FormData(formularioCompra);
+    const nombre = datos.get("nombre");
+    const unidades = Number(formularioCompra.elements.cantidad.value);
+    const {total} = resumenCarrito(carrito);
+
+    mostrarAviso(
+        `
+        Gracias, ${nombre}. Tu pedido de ${carrito.length} producto(s) y ${unidades} unidad(es) 
+        ` + 
+        `por ${formatearPrecio(total)} quedo registrado.`, false
+    );
+    formularioCompra.reset();
+
+})
 pintarCatalogo();
-
-console.log("TechCart:  catalogo generado desde el arreglo,", productos.length, "productos");
-console.log(document.querySelectorAll(".tarjeta").length);
-console.log("Tarjeta que existen antes en el HTML", tarjetasAlCargar.length);
-
-// const grid = document.querySelector(("#catalogo-grid"));
-// const antes = grid.querySelector("button");
-// grid.innerHTML = grid.innerHTML
-
-// console.log(antes === grid.querySelector("button"));
+pintarCarrito();
