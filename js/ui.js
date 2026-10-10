@@ -50,3 +50,22 @@ export const filaCarrito = ({nombre, precio}, indice) => `
             </span>
         </li>
 `;
+
+export const esqueletoTarjeta = () => `
+        <article class="tarjeta flex flex-col animate-pulse motion-reduce:animate-none" aria-hidden="true>
+            <div class="w-full aspect-square bg-fondo-suave rounded-lg mb-3"></div>
+            <div class="h-3 w-1/2 self-center bg-fondo-suave rounded-full mb-2"></div>
+            <div class="h-4 w-3/4 self-center bg-fondo-suave rounded-full mb-2"></div>
+            <div class="h-3 w-1/3 self-center bg-fondo-suave rounded-full mb-4"></div>
+            <div class="h-9 w-2/3 self-center bg-fondo-suave rounded-full mt-auto"></div>
+        </article>
+`;
+
+export const avisoCatalogo = (texto) => `
+    <p class="text-sm text-texto-suave my-3">${texto}</p>
+`;
+
+export const avisoError = (mensaje) => `
+    <p class = "font-semibold text-error mb-3>${mensaje}</p>
+    <button class="boton" type="button" data-accion="reintentar">Reintar</button>
+`
