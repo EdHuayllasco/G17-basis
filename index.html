@@ -11,7 +11,6 @@
   <!-- CDN de Tailwind v4 -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <script defer src="./js/main.js"></script>
-
   <style type="text/tailwindcss">
     @theme {
       --color-marca:        #0066cc;
@@ -110,17 +109,18 @@
 
 <body class="bg-fondo text-texto font-sans antialiased leading-normal">
 
-  <!-- ENCABEZADO -->
-  <header class="sticky top-0 z-10 border-b border-borde bg-tarjeta/90 backdrop-blur">
-    <div class="mx-auto flex max-w-pagina monitor:max-w-ancha flex-wrap items-center justify-between gap-3 px-4 py-3">
-      <h1 class="text-2xl font-bold tracking-tight text-marca">TechCart</h1>
-      <nav aria-label="Principal">
-        <ul class="flex gap-5 font-medium">
-          <li><a href="#catalogo" class="hover:text-marca focus-visible:text-marca">Catalogo</a></li>
-          <li><a href="#compra" class="hover:text-marca focus-visible:text-marca">Comprar</a></li>
-        </ul>
-      </nav>
-    </div>
+  <header class="flex flex-col items-start gap-4 bg-tarjeta rounded-tarjeta py-4 px-5
+                 md:flex-row md:justify-between md:items-center">
+
+    <h1 class="flex items-center justify-center w-35 h-11 bg-marca text-sobre-marca rounded-lg text-xl">TechCart</h1>
+
+    <nav aria-label="Principal">
+
+      <ul class="flex gap-5">
+        <li><a class="text-marca font-semibold no-underline hover:underline" href="#catalogo">Catálogo</a></li>
+        <li><a class="text-marca font-semibold no-underline hover:underline" href="#compra">Comprar</a></li>
+      </ul>
+    </nav>
   </header>
 
   <!-- CONTENIDO PRINCIPAL -->
@@ -154,71 +154,99 @@
       </ul>
     </section>
 
-    <!-- CATÁLOGO -->
-    <section id="catalogo" class="scroll-mt-20">
-      <h2 class="titulo-seccion mb-4">Catalogo de productos</h2>
-      <div class="productos grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-4">
-        <article class="destacado tarjeta relative flex flex-col gap-2 ring-2 ring-marca">
-          <span
-            class="absolute -top-3 right-3 rounded-full bg-marca px-3 py-0.5 text-xs font-semibold text-sobre-marca motion-safe:animate-latido">
-            Destacado
-          </span>
-          <figure class="text-center">
-            <img src="https://www.appleperu.pe/wp-content/uploads/macbook-pro-retina.jpg"
-              alt="Macbook Pro 14 pulgadas gris espacial" width="200" class="mx-auto h-40 object-contain dark:brightness-90"/>
-            <figcaption class="text-sm text-texto-suave">Apple</figcaption>
+    <section id="catalogo">
+      <h2 class="titulo-seccion">Catálogo de productos</h2>
+
+      <div class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-y-6 gap-x-4 md:auto-rows-fr">
+
+        <article class="tarjeta group flex flex-col justify-center text-center
+                        bg-resalte border-marca border-2 md:col-span-2 md:row-span-2
+                        transition-[transform,box-shadow] duration-200
+                        hover:-translate-y-1 hover:shadow-lg dark:hover:ring-1 dark:hover:ring-marca
+                        animate-aparecer
+                        motion-reduce:transition-none motion-reduce:animate-none
+                        before:content-['Destacado'] before:inline-block before:self-center
+                        before:text-marca before:text-xs before:font-bold before:uppercase
+                        before:tracking-wider before:border before:border-marca
+                        before:rounded-full before:px-2.5 before:py-0.5 before:mb-2
+                        before:animate-latido motion-reduce:before:animate-none">
+          <figure class="mb-3">
+
+            <img class="w-full max-w-75 aspect-square object-contain dark:brightness-90"
+                 src="https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/thumbnail.webp"
+                 alt="MacBook Pro 14 pulgadas gris espacial" width="200" />
+            <figcaption class="text-xs font-semibold text-texto-suave uppercase tracking-wide">Apple</figcaption>
           </figure>
-          <h3 class="font-semibold">Macbook Pro 14"</h3>
-          <p class="text-lg text-exito"><strong>$1,999.99</strong></p>
-          <button type="button" class="boton mt-auto">Agregar al carrito</button>
+          <h3 class="text-lg leading-tight my-1 group-hover:text-marca">MacBook Pro 14"</h3>
+          <p class="mb-3"><strong class="text-exito">$1,999.99</strong></p>
+
+          <button class="boton self-center mt-4" type="button">Agregar al carrito</button>
         </article>
-        <article class="tarjeta flex flex-col gap-2">
-          <figure class="text-center">
-            <img
-              src="https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS1eCKck5yyiDW08v0Uuzc-LssM4iJC3ttkPCbGSW-JpuJpH_OtZoalXeRYyit1DX0tDM9PaF0aedQP_PSy8K1kUc2Un-b1pr0I8YTPaokJFTWsc5nwQYzluZwKWMaS0CKHa9SD7XUSLw&usqp=CAc"
-              alt="Macbook Pro 14 pulgadas, vista frontal" width="200" class="mx-auto h-40 object-contain dark:brightness-90"/>
-            <figcaption class="text-sm text-texto-suave">Apple</figcaption>
+
+        <article class="tarjeta group flex flex-col text-center
+                        transition-[transform,box-shadow] duration-200
+                        hover:-translate-y-1 hover:shadow-lg dark:hover:ring-1 dark:hover:ring-marca
+                        animate-aparecer
+                        motion-reduce:transition-none motion-reduce:animate-none">
+          <figure class="mb-3">
+            <img class="aspect-square object-contain dark:brightness-90"
+                 src="https://cdn.dummyjson.com/product-images/smartphones/iphone-13-pro/thumbnail.webp"
+                 alt="iPhone 13 Pro" width="200" />
+            <figcaption class="text-xs font-semibold text-texto-suave uppercase tracking-wide">Apple</figcaption>
           </figure>
-          <h3 class="font-semibold">Macbook Pro 14"</h3>
-          <p class="text-lg text-exito"><strong>$2,000.99</strong></p>
-          <button type="button" class="boton mt-auto">Agregar al carrito</button>
+          <h3 class="text-lg leading-tight my-1 group-hover:text-marca">iPhone 13 Pro</h3>
+          <p class="mb-3"><strong class="text-exito">$1,099.99</strong></p>
+
+          <button class="boton self-center mt-auto" type="button">Agregar al carrito</button>
         </article>
-        <article class="tarjeta flex flex-col gap-2">
-          <figure class="text-center">
-            <img src="https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111902_mbp14-silver2.png"
-              alt="Macbook Pro 14 pulgadas plateada" width="200" class="mx-auto h-40 object-contain dark:brightness-90"/>
-            <figcaption class="text-sm text-texto-suave">Apple</figcaption>
+
+        <article class="tarjeta group flex flex-col text-center
+                        transition-[transform,box-shadow] duration-200
+                        hover:-translate-y-1 hover:shadow-lg dark:hover:ring-1 dark:hover:ring-marca
+                        animate-aparecer
+                        motion-reduce:transition-none motion-reduce:animate-none">
+          <figure class="mb-3">
+            <img class="aspect-square object-contain dark:brightness-90"
+                 src="https://cdn.dummyjson.com/product-images/tablets/ipad-mini-2021-starlight/thumbnail.webp"
+                 alt="iPad Mini 2021" width="200" />
+            <figcaption class="text-xs font-semibold text-texto-suave uppercase tracking-wide">Apple</figcaption>
           </figure>
-          <h3 class="font-semibold">Macbook Pro 14"</h3>
-          <p class="text-lg text-exito"><strong>$4,599.99</strong></p>
-          <button type="button" class="boton mt-auto">Agregar al carrito</button>
+          <h3 class="text-lg leading-tight my-1 group-hover:text-marca">iPad Mini 2021</h3>
+          <p class="mb-3"><strong class="text-exito">$499.99</strong></p>
+          <button class="boton self-center mt-auto" type="button">Agregar al carrito</button>
         </article>
-        <article class="tarjeta relative flex flex-col gap-2
-                        before:content-['Oferta'] before:absolute before:-top-3 before:left-3
-                        before:rounded-full before:bg-oferta before:px-3 before:py-0.5
-                        before:text-xs before:font-semibold before:text-sobre-marca">
-          <figure class="text-center">
-            <img src="https://www.appleperu.pe/wp-content/uploads/1990-1.jpg"
-              alt="Macbook Pro 14 pulgadas, vista lateral" width="200" class="mx-auto h-40 object-contain dark:brightness-90"/>
-            <figcaption class="text-sm text-texto-suave">Apple</figcaption>
+
+        <article class="tarjeta group flex flex-col text-center
+                        transition-[transform,box-shadow] duration-200
+                        hover:-translate-y-1 hover:shadow-lg dark:hover:ring-1 dark:hover:ring-marca
+                        animate-aparecer
+                        motion-reduce:transition-none motion-reduce:animate-none">
+          <figure class="mb-3">
+            <img class="aspect-square object-contain dark:brightness-90"
+                 src="https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods-max-silver/thumbnail.webp"
+                 alt="AirPods Max plateados" width="200" />
+            <figcaption class="text-xs font-semibold text-texto-suave uppercase tracking-wide">Apple</figcaption>
           </figure>
-          <h3 class="font-semibold">Macbook Pro 14"</h3>
-          <p class="text-lg text-exito"><strong>$1,009.99</strong></p>
-          <button type="button" class="boton mt-auto">Agregar al carrito</button>
+          <h3 class="text-lg leading-tight my-1 group-hover:text-marca">AirPods Max</h3>
+          <p class="mb-3"><strong class="text-exito">$549.99</strong></p>
+          <button class="boton self-center mt-auto" type="button">Agregar al carrito</button>
         </article>
+
       </div>
     </section>
 
-    <!-- FORMULARIO -->
-    <section id="compra" class="scroll-mt-20">
-      <h2 class="titulo-seccion mb-4">Finalizar compra</h2>
-      <form action="" class="grid gap-6">
-        <fieldset class="envio tarjeta grid gap-4 sm:grid-cols-2">
-          <legend class="px-2 font-semibold">Datos de envio</legend>
-          <p class="flex flex-wrap gap-1">
-            <label for="nombre">Nombre completo</label>
-            <input class="campo" type="text" id="nombre" name="nombre" required minlength="3" autocomplete="name"
-              placeholder="Nombre del usuario">
+    <section id="compra" class="bg-tarjeta rounded-tarjeta p-6 mt-6">
+      <h2 class="titulo-seccion">Finalizar compra</h2>
+
+      <form>
+
+        <fieldset class="border border-borde rounded-lg p-4 mb-4 grid grid-cols-1 gap-x-4 md:grid-cols-2">
+          <legend class="font-semibold px-1.5">Datos de envío</legend>
+
+          <p class="flex flex-wrap items-center gap-2 my-3 last:mb-0">
+            <label class="basis-full" for="nombre">Nombre completo</label>
+            <input class="campo" type="text" id="nombre" name="nombre" required minlength="3"
+                   placeholder="Ej.: Ana Pérez" autocomplete="name" />
           </p>
           <p class="flex flex-wrap gap-1">
             <label for="email">Correo electronico</label>
@@ -293,7 +321,9 @@
           <input class="size-4 accent-marca" type="checkbox" id="terminos" name="terminos" required>
           <label for="terminos">Acepto terminos y condiciones</label>
         </p>
-        <button type="submit" class="boton justify-self-start font-semibold">Confirmar pedido</button>
+
+        <button class="boton bg-exito text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                type="submit">Confirmar pedido</button>
       </form>
     </section>
   </main>
