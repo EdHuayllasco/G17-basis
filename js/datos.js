@@ -31,3 +31,9 @@ export const productos = [
 export const contarPorCategoria = (items) => 
     items.reduce((cuenta, {categoria}) => ({...cuenta, [categoria] : (cuenta[categoria] ?? 0) + 1}),{});
 
+// Tarea 8 - DIFÍCIL 1: { laptops: [...], smartphones: [...], ... }
+export const agruparPorCategoria = (items) =>
+    items.reduce((grupos, producto) => ({
+        ...grupos,
+        [producto.categoria]: [...(grupos[producto.categoria] ?? []), producto],
+    }), {});

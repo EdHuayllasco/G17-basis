@@ -1,4 +1,5 @@
-import {IGV, ENVIO_GRATIS_DESDE, costoDeEnvio, sumar} from "./tienda.js";
+import {IGV, ENVIO_GRATIS_DESDE, sumar} from "./tienda.js";
+import { costoDeEnvio } from "./envio.js";
 export const CLAVE_CARRITO = "techcart_carrito";
 
 export const agregarAlCarrito = (carrito, producto) => [...carrito, producto];

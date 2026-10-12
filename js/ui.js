@@ -40,7 +40,7 @@ export const tarjetaProducto = ({destacado, id, imagen, alt, marca, nombre, prec
 
 export const filaCarrito = ({nombre, precio}, indice) => `
         <li class="flex flex-wrap items-center justify-between gap-2 border-b border-borde py-2">
-            <span>${nombre}</span>"
+            <span>${nombre}</span>
             <span class="flex items-center gap-3">
                 <strong class="text-exito">${formatearPrecio(precio)}</strong>
                 <button class="boton text-sm" type="button" data-accion="quitar" 
@@ -52,7 +52,7 @@ export const filaCarrito = ({nombre, precio}, indice) => `
 `;
 
 export const esqueletoTarjeta = () => `
-        <article class="tarjeta flex flex-col animate-pulse motion-reduce:animate-none" aria-hidden="true>
+        <article class="tarjeta flex flex-col animate-pulse motion-reduce:animate-none" aria-hidden="true">
             <div class="w-full aspect-square bg-fondo-suave rounded-lg mb-3"></div>
             <div class="h-3 w-1/2 self-center bg-fondo-suave rounded-full mb-2"></div>
             <div class="h-4 w-3/4 self-center bg-fondo-suave rounded-full mb-2"></div>
@@ -66,6 +66,6 @@ export const avisoCatalogo = (texto) => `
 `;
 
 export const avisoError = (mensaje) => `
-    <p class = "font-semibold text-error mb-3>${mensaje}</p>
-    <button class="boton" type="button" data-accion="reintentar">Reintar</button>
+    <p class="font-semibold text-error mb-3">${mensaje}</p>
+    <button class="boton" type="button" data-accion="reintentar">Reintentar</button>
 `
