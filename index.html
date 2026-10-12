@@ -1,51 +1,86 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TechCart — Tienda de electrónica</title>
 
+  <!-- Nuestra hoja a mano: solo el plano de la página y los fotogramas. -->
   <link rel="stylesheet" href="./css/styles.css" />
 
+  <!--
+    Tailwind v4 por CDN de NAVEGADOR. Lee el HTML, ve qué utilidades se están usando,
+    genera el CSS de esas y solo esas, y lo inyecta en la página. Sin instalar nada.
+    Es para aprender y para prototipos: en un proyecto real se instala con npm y el CSS
+    se genera antes de publicar. Eso llega en la semana 5, con React.
+  -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <script type="module" src="./js/main.js"></script>
+
+  <!--
+    Este bloque es CSS que pasa POR Tailwind (por eso el type). Lo que se escriba aquí
+    entiende @theme, @apply y las variantes. Un <style> normal, o nuestro css/styles.css,
+    van derecho al navegador sin pasar por Tailwind: ahí @apply no haría nada.
+  -->
   <style type="text/tailwindcss">
-
+    /*
+      @theme es como :root, pero con una diferencia: aquí cada token, además
+      de existir como variable, GENERA UTILIDADES. El prefijo del nombre dice de qué
+      familia es: --color-* hace bg-, text- y border-; --radius-* hace rounded-;
+      --text-* hace tamaños de letra; --font-* tipografías; --animate-* animaciones;
+      --breakpoint-* puntos de corte; --container-* anchos máximos.
+      (En Tailwind v3 esto mismo se escribía en un archivo tailwind.config.js aparte;
+      en v4 vive en el CSS, que es donde ya estaban acostumbrados a verlo.)
+    */
     @theme {
+      /* --- Colores: los 11 tokens, con el prefijo --color- --- */
+      --color-marca:        #0066cc;   /* azul de la marca: títulos, enlaces, botones, foco */
+      --color-sobre-marca:  #fff;      /* lo que se escribe ENCIMA de la marca */
+      --color-exito:        hsl(146 85% 26%);  /* verde: el precio y el botón de confirmar */
+      --color-error:        #c0392b;   /* rojo del campo inválido */
+      --color-fondo:        #f5f5f7;   /* fondo de la página y de los campos */
+      --color-fondo-suave:  #e5e5ea;   /* fondo del encabezado de la tabla */
+      --color-tarjeta:      #fff;      /* fondo de tarjetas y paneles */
+      --color-resalte:      #e8f1fb;   /* destacada y fila de tabla con el mouse encima */
+      --color-texto:        #1d1d1f;   /* texto principal */
+      --color-texto-suave:  #6e6e73;   /* texto secundario */
+      --color-borde:        #d2d2d7;   /* bordes */
 
-      --color-marca:        #0066cc;
-      --color-sobre-marca:  #fff;
-      --color-exito:        hsl(146 85% 26%);
-      --color-error:        #c0392b;
-      --color-fondo:        #f5f5f7;
-      --color-fondo-suave:  #e5e5ea;
-      --color-tarjeta:      #fff;
-      --color-resalte:      #e8f1fb;
-      --color-texto:        #1d1d1f;
-      --color-texto-suave:  #6e6e73;
-      --color-borde:        #d2d2d7;
-
+      /* --- Forma: el --radio. El 8px del fieldset ya existe: rounded-lg --- */
       --radius-tarjeta: 12px;
 
+      /* --- Tipografía: --fuente pasa a --font-sans, que es la que Tailwind usa por
+             defecto en toda la página, así que ya no hace falta pedirla en ningún lado --- */
       --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-
+      /* El clamp() de los subtítulos, con nombre propio: text-seccion */
       --text-seccion: clamp(1.25rem, 1rem + 1.2vw, 1.5rem);
 
+      /* --- Animaciones: el nombre y el ritmo aquí; los fotogramas, en css/styles.css --- */
       --animate-aparecer: aparecer 0.5s ease-out backwards;
       --animate-latido:   latido 1.6s ease-in-out infinite alternate;
 
+      /* --- Puntos de corte: 48em y 64em ya existen como md: y lg:. El tercero de la
+             75em no está en la escala de fábrica, así que se declara: monitor:.
+             Va en rem porque la escala de Tailwind está en rem y los cortes se ordenan por
+             su valor; dentro de una media query rem y em valen lo mismo, los 16px del
+             navegador, así que 75rem son 1200px --- */
       --breakpoint-monitor: 75rem;
 
+      /* --- Anchos del contenedor centrado: 1100px, y 1280px desde 75em --- */
       --container-pagina: 1100px;
       --container-ancha:  1280px;
     }
 
+    /*
+      MODO OSCURO: solo se redefinen los tokens de color. No se reescribe ni una
+      utilidad; solo cambian los valores de los tokens, y todo lo que apunta a
+      var(--color-…) se actualiza solo. Los tokens de --color- viven en :root, así que
+      redefinirlos aquí alcanza.
+    */
     @media (prefers-color-scheme: dark) {
       :root {
-        --color-marca:        #3d9bff;
-        --color-sobre-marca:  #0b1220;
-        --color-exito:        #30d158;
+        --color-marca:        #3d9bff;  /* el azul aclara: el #0066cc sobre negro no contrasta */
+        --color-sobre-marca:  #0b1220;  /* y por eso lo de encima ahora es OSCURO, no blanco */
+        --color-exito:        #30d158;  /* el verde también aclara */
         --color-error:        #ff6b5e;
         --color-fondo:        #111114;
         --color-fondo-suave:  #2c2c2e;
@@ -57,12 +92,23 @@
       }
     }
 
+    /*
+      COMPONENTES REUTILIZABLES. Solo cuatro, y las cuatro se ganaron el lugar por
+      repetición: la tarjeta aparece 7 veces, el campo 8, el botón 5 y el título 3.
+      @apply pega adentro de una clase propia lo que harían esas utilidades.
+      Van dentro de @layer components a propósito: así una utilidad suelta en el HTML
+      les gana (por eso .destacado puede pedir bg-resalte y border-2 sobre .tarjeta).
+    */
     @layer components {
 
+      /* La tarjeta: fondo, borde, radio y aire. Lo que cambia de una a otra (la columna,
+         la animación, el hover) NO entra aquí; va como utilidad en cada elemento. */
       .tarjeta {
         @apply bg-tarjeta border border-borde rounded-tarjeta p-4;
       }
 
+      /* El botón: la píldora azul. El padding va en em para que
+         crezca con el tamaño de letra del propio botón; por eso es un valor arbitrario. */
       .boton {
         @apply bg-marca text-sobre-marca cursor-pointer rounded-full px-[1.2em] py-[0.6em]
                transition-[transform,filter] duration-150
@@ -73,6 +119,8 @@
                motion-reduce:transition-none;
       }
 
+      /* El campo de formulario. user-invalid: es la variante del :user-invalid de la
+         Se pone rojo recién después de que la persona lo tocó. */
       .campo {
         @apply basis-full min-w-0 px-3 py-2 border border-borde rounded-lg
                bg-fondo text-texto
@@ -81,6 +129,9 @@
                focus-visible:outline-3 focus-visible:outline-marca focus-visible:outline-offset-2;
       }
 
+      /* El título de sección con su barra debajo: un h2::after, con
+         la variante after:. Los 3px de la barra no están en la escala de 4 en 4, así que
+         ese sí es un valor arbitrario legítimo. */
       .titulo-seccion {
         @apply text-seccion leading-tight
                after:content-[''] after:block after:w-12 after:h-[3px]
@@ -88,25 +139,31 @@
       }
     }
   </style>
+
+  <script type="module" src="./js/main.js"></script>
 </head>
 
 <body class="bg-fondo text-texto max-w-pagina monitor:max-w-ancha mx-auto p-4 lg:p-5 monitor:p-7">
 
+  <!-- ===== ENCABEZADO · zona "cabecera" del plano ===== -->
   <header class="flex flex-col items-start gap-4 bg-tarjeta rounded-tarjeta py-4 px-5
                  md:flex-row md:justify-between md:items-center">
-
+    <!-- El logo: caja fija de 140×44 con su contenido centrado en los dos ejes.
+         w-35 son 35 × 4px = 140. h-11 son 44. La escala de Tailwind va de 4 en 4. -->
     <h1 class="flex items-center justify-center w-35 h-11 bg-marca text-sobre-marca rounded-lg text-xl">TechCart</h1>
 
     <nav aria-label="Principal">
-
+      <!-- Preflight (el reset de Tailwind) ya le quitó los puntos y el margen al <ul>. -->
       <ul class="flex gap-5">
         <li><a class="text-marca font-semibold no-underline hover:underline" href="#catalogo">Catálogo</a></li>
         <li><a class="text-marca font-semibold no-underline hover:underline" href="#compra">Comprar</a></li>
       </ul>
     </nav>
+
     <p id="resumen-carrito" class="font-semibold m-0" role="status" aria-live="polite"></p>
   </header>
 
+  <!-- ===== CONTENIDO PRINCIPAL · zona "contenido" del plano ===== -->
   <main>
 
     <section class="grid grid-cols-[repeat(auto-fit,minmax(min(150px,100%),1fr))] gap-4 mb-6"
@@ -130,26 +187,47 @@
 
     <section id="catalogo">
       <h2 class="titulo-seccion">Catálogo de productos</h2>
-      <div id="estado-catalogo" role ="status" aria-live="polite"></div>
-      <div id="catalogo-grid" class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-y-6 gap-x-4 md:auto-rows-fr">
+
+      <p id="aviso-respaldo" hidden
+         class="bg-resalte border border-borde rounded-lg px-4 py-3 my-3 text-sm"></p>
+
+      <div class="flex flex-wrap items-center gap-3 my-4">
+        <div id="filtros-categoria" class="flex flex-wrap gap-2"
+             role="group" aria-label="Filtrar el catálogo por categoría"></div>
+        <input id="buscador" class="campo basis-auto grow md:grow-0 md:w-72 md:ml-auto"
+               type="search" placeholder="Buscar en el catálogo…"
+               aria-label="Buscar en el catálogo" />
       </div>
 
+      <div id="estado-catalogo" role="status" aria-live="polite"></div>
+
+      <div id="catalogo-grid"
+           class="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-y-6 gap-x-4 md:auto-rows-fr"></div>
     </section>
+
     <section id="carrito" class="bg-tarjeta rounded-tarjeta p-6 mt-6">
       <h2 class="titulo-seccion">Tu carrito</h2>
+
       <ul id="lista-carrito" class="list-none p-0 m-0"></ul>
+
       <p id="total-carrito" class="font-semibold mt-4"></p>
-      <div class="h-2 w-full bg-fondo-suave rounded-full overflow:hidden mt-2" aria-hidden="true">
+
+      <!-- La barra es un adorno: lo que dice ya está escrito en el párrafo de abajo,
+           que es el que leen los lectores de pantalla. Por eso va aria-hidden="true" y
+           no un rol de medidor: repetir el mismo dato dos veces molesta más que ayuda. -->
+      <div class="h-2 w-full bg-fondo-suave rounded-full overflow-hidden mt-2" aria-hidden="true">
         <div id="barra-envio" class="h-full bg-exito w-0"></div>
       </div>
       <p id="mensaje-envio" class="text-sm text-texto-suave mt-1"></p>
-      <button id="vaciar" class="boton mt-4" type="button">Vaciar Carrito</button>
+
+      <button id="vaciar" class="boton mt-4" type="button">Vaciar carrito</button>
     </section>
+
+    <!-- ===== FORMULARIO DE COMPRA ===== -->
     <section id="compra" class="bg-tarjeta rounded-tarjeta p-6 mt-6">
       <h2 class="titulo-seccion">Finalizar compra</h2>
 
       <form id="form-compra" novalidate>
-
         <fieldset class="border border-borde rounded-lg p-4 mb-4 grid grid-cols-1 gap-x-4 md:grid-cols-2">
           <legend class="font-semibold px-1.5">Datos de envío</legend>
 
@@ -206,12 +284,6 @@
             <input class="campo" type="date" id="fecha" name="fecha" />
           </p>
 
-          <p class="flex flex-wrap items-center gap-2 my-3 last:mb-0">
-            <label class="basis-full" for="cantidad">Cantidad de unidades</label>
-            <input class="campo" type="number" id="cantidad" name="cantidad" min="1" max="10" step="1"
-                   value="1" required />
-          </p>
-
           <p class="flex flex-wrap items-center gap-2 my-3 last:mb-0 col-span-full">
             <label class="basis-full" for="notas">Notas para el repartidor (opcional)</label>
             <textarea class="campo" id="notas" name="notas" rows="3" maxlength="200"></textarea>
@@ -221,6 +293,7 @@
         <fieldset class="border border-borde rounded-lg p-4 mb-4">
           <legend class="font-semibold px-1.5">Método de pago</legend>
 
+          <!-- El radio conserva su ancho natural: shrink-0 para que no lo encoja el flex. -->
           <p class="flex flex-wrap items-center gap-2 my-3 last:mb-0">
             <input class="shrink-0 focus-visible:outline-3 focus-visible:outline-marca focus-visible:outline-offset-2"
                    type="radio" id="pago-tarjeta" name="pago" value="tarjeta" required />
@@ -244,19 +317,30 @@
           <label for="terminos">Acepto los términos y condiciones</label>
         </p>
 
+        <!-- disabled: se ve solo cuando el botón está deshabilitado. Hoy nunca lo está;
+             queda listo para cuando JavaScript lo apague mientras se envía el pedido. -->
         <button class="boton bg-exito text-lg disabled:opacity-50 disabled:cursor-not-allowed"
                 type="submit">Confirmar pedido</button>
+
+        <!-- Aquí aterriza la respuesta al "Confirmar pedido". Nace vacío. Si falta algo,
+             JavaScript le mete un <p> con el aviso; si el pedido se confirma, le mete la
+             caja del comprobante. Las dos cosas se crean con createElement y se llenan
+             con textContent, porque adentro va lo que tecleó la persona. -->
         <div id="estado-pedido" class="mt-3" role="status" aria-live="polite"></div>
       </form>
     </section>
 
   </main>
 
+  <!-- ===== BARRA LATERAL · zona "lateral" del plano ===== -->
+  <!-- Va DESPUÉS de <main> en el HTML y se ve a la IZQUIERDA desde 1024px: eso lo decide
+       el plano de css/styles.css, no el orden del HTML. overflow-x-auto hace que una tabla
+       ancha se desplace DENTRO del panel y no arrastre a la página. -->
   <aside class="flex flex-col items-stretch gap-2 bg-tarjeta border border-borde rounded-tarjeta p-6 overflow-x-auto">
     <h2 class="titulo-seccion">Información de compra</h2>
 
     <h3 class="text-lg leading-tight mt-4">Cómo comprar en tres pasos</h3>
-
+    <!-- Preflight le quitó los números al <ol>, así que se los devolvemos con list-decimal. -->
     <ol class="list-decimal pl-6">
       <li>Elige un producto del catálogo.</li>
       <li>Agrégalo al carrito.</li>
@@ -274,7 +358,6 @@
         </tr>
       </thead>
       <tbody>
-
         <tr class="even:bg-fondo hover:bg-resalte">
           <td class="border border-borde px-2 py-1.5">Lima</td>
           <td class="border border-borde px-2 py-1.5">24 horas</td>
@@ -294,12 +377,12 @@
     </table>
   </aside>
 
+  <!-- ===== PIE DE PÁGINA · zona "pie" del plano ===== -->
   <footer class="flex flex-wrap items-center gap-4 py-6 border-t border-borde text-texto-suave text-sm">
     <p>&copy; 2026 TechCart · Proyecto educativo</p>
     <p>Datos e imágenes de
       <a class="text-marca after:content-['↗'] after:ml-1"
          href="https://dummyjson.com" target="_blank" rel="noopener">DummyJSON</a></p>
-
     <address class="order-first mr-auto not-italic">Contacto:
       <a class="text-marca" href="mailto:hola@techcart.com">hola@techcart.com</a></address>
   </footer>

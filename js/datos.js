@@ -1,33 +1,21 @@
-export const categorias = ["laptops", "smartphones", "tablets", "mobile-accesories"];
-export const productos = [
-    {id: 1, nombre: "Macbook Pro 14", marca: "Apple", precio: 1999.99, categoria: "laptops", stock: 5, destacado: true, 
-        envio : {zona: "Lima", dias : 1}, 
-        imagen : "https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/thumbnail.webp",
-        alt : "Macbook Pro 14 pulgadas gris espacial" 
-    },
-    {id: 2, nombre: "Iphone 13 Pro", marca: "Apple", precio: 1099.99, categoria:"smartphones", stock: 8, destacado: false,
-        envio: {zona : "Lima", dias : 1},
-        imagen : "https://cdn.dummyjson.com/product-images/smartphones/iphone-13-pro/thumbnail.webp",
-        alt:"iPhone 13 Pro"
-    },
-    {id: 3, nombre: "Ipad Mini 2021", marca: "Apple", precio: 499.99, categoria: "tablets", stock: 0, destacado:false,
-        envio: {zona: "Resto del Peru", dias: 4 },
-        imagen : "https://cdn.dummyjson.com/product-images/tablets/ipad-mini-2021-starlight/thumbnail.webp",
-                 alt : "iPad Mini 2021" 
-    },
-    {id: 4, nombre: "Airpods Max", marca: "Apple", precio: 549.99, categoria: "audio", stock: 3, destacado: false,
-        envio: {zona: "Lima", dias: 1}, 
-        imagen : "https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods-max-silver/thumbnail.webp",
-        alt : "AirPods Max plateados"
-    },
-    {id: 5, nombre: "Macbook Air 13", marca: "Apple", precio: 1299.99, categoria: "laptops", stock: 4, destacado: false, 
-        envio: {zona: "Resto del Peru", dias: 4},
-    },
-    {id: 6, nombre: "Iphone 15", marca: "Apple", precio: 999.99, categoria: "smartphones", stock: 0, destacado: false,
-        envio : { zona : "Internacional", dias : 10},
-    }
-];
+/* datos.js — lo que la tienda decide por su cuenta: las categorías y sus etiquetas. */
 
-export const contarPorCategoria = (items) => 
-    items.reduce((cuenta, {categoria}) => ({...cuenta, [categoria] : (cuenta[categoria] ?? 0) + 1}),{});
+export const categorias = ["laptops", "smartphones", "tablets", "mobile-accessories"];
 
+/* El nombre que se ve, por cada valor que se usa. Un objeto y no un switch porque
+   esto es una tabla de equivalencias, no una decisión: se consulta por su clave. */
+export const etiquetaCategoria = {
+  laptops: "Laptops",
+  smartphones: "Teléfonos",
+  tablets: "Tablets",
+  "mobile-accessories": "Accesorios",
+};
+
+/* Cuántos productos hay de cada categoría.
+   Un reduce cuyo acumulador es un OBJETO, no un número: por eso el valor inicial
+   es {}. En cada vuelta devuelve una copia del acumulador con una propiedad más,
+   y el nombre de esa propiedad sale de un dato, así que va entre corchetes:
+   eso es un nombre de propiedad calculado. El `?? 0` cubre la primera vez que
+   aparece una categoría, cuando todavía no existe esa cuenta. */
+export const contarPorCategoria = (items) =>
+  items.reduce((cuenta, { categoria }) => ({ ...cuenta, [categoria]: (cuenta[categoria] ?? 0) + 1 }), {});

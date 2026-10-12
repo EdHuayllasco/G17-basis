@@ -1,9 +1,53 @@
+/* ============================================================
+   Clase 11 — La tienda terminada: respaldo, filtros, buscador, carrito con
+   cantidades y checkout.
 
+   ESTE ARCHIVO NO CAMBIA HOY. Son las mismas nueve reglas que quedaron al cerrar la
+   Clase 6 y que las Clases 7, 8, 9 y 10 tampoco tocaron, letra por letra. Se deja aquí
+   porque cada carpeta clase-XX es el proyecto completo y ejecutable de esa clase, no
+   solo lo nuevo.
 
+   Y vale la pena decir por qué no cambia, porque hoy aparecen bastantes cosas nuevas en
+   pantalla: los botones de categoría con su estado activo, el campo de búsqueda, el
+   cartel del catálogo guardado, los botones de más y menos de cada fila del carrito y
+   la caja del comprobante. Todas están escritas con utilidades de Tailwind, dentro de
+   js/ui.js o en el propio HTML. No hizo falta una sola regla a mano, y eso es lo que
+   se gana al tener un sistema de diseño con tokens desde la Clase 5: lo nuevo se arma
+   con las piezas que ya existen y queda igual que el resto sin pensarlo.
+
+   Lo que quedó en este archivo, y por qué (explicado en la Clase 6):
+
+     1) EL PLANO DE LA PÁGINA. `grid-template-areas` dibuja el reparto con nombres
+        ("cabecera", "lateral", "contenido", "pie"). Escrito como utilidad sería un valor
+        arbitrario de tres líneas entre corchetes, ilegible. Un plano se lee mejor en CSS.
+        Y como el plano vive aquí, sus dos puntos de corte viven aquí también.
+
+     2) LOS FOTOGRAMAS. Tailwind tiene utilidades para APLICAR una animación
+        (`animate-aparecer`), pero ninguna para DESCRIBIR sus fotogramas: un @keyframes
+        es CSS a mano, siempre. Los nombres se registran como tokens en @theme y eso es
+        lo que convierte `aparecer` y `latido` en utilidades.
+
+   Una advertencia que se explica en clase: todo lo que se escribe en este archivo está
+   FUERA de las capas de Tailwind (@layer theme, base, components, utilities), y en CSS
+   una regla sin capa le gana a cualquier regla con capa, pese la que pese. O sea que lo
+   que esté aquí le gana a las utilidades del HTML. Por eso este archivo se queda corto
+   y toca solo propiedades que ninguna utilidad de la página usa.
+   ============================================================ */
+
+/* ---------- Los dos modos, para los controles que dibuja el navegador ----------
+   Con esto la barra de desplazamiento, el calendario del campo de fecha y las flechas
+   del <select> también se oscurecen. Es lo mismo que se escribió en la Clase 5. */
 :root {
   color-scheme: light dark;
 }
 
+/* ============================================================
+   1. EL PLANO DE LA PÁGINA
+   Base de CELULAR: una sola columna y cuatro zonas apiladas. El <body> es el contenedor
+   grid; sus hijos directos (header, main, aside y footer) son los ítems.
+   minmax(0, 1fr) → una columna que puede encoger de verdad (Clase 4).
+   min-height: 100vh + filas auto auto 1fr auto → el pie queda pegado abajo.
+   ============================================================ */
 body {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -17,11 +61,16 @@ body {
   min-height: 100vh;
 }
 
+/* Cada ítem del body va a su zona. La lateral no se estira hasta el alto de su fila. */
 header { grid-area: cabecera; }
 main   { grid-area: contenido; }
 aside  { grid-area: lateral; align-self: start; }
 footer { grid-area: pie; }
 
+/* Desde escritorio (64em = 1024px) entra la barra lateral al costado. El número es el
+   mismo de la Clase 5 y sale de la misma cuenta: 300px de lateral más 24 de aire más dos
+   tarjetas de 200 no caben en 768 y sí en 1024. Es el `lg:` de Tailwind, escrito a mano
+   porque la regla que cambia es el plano. */
 @media (min-width: 64em) {
   body {
     grid-template-columns: 300px minmax(0, 1fr);
@@ -33,6 +82,12 @@ footer { grid-area: pie; }
   }
 }
 
+/* ============================================================
+   2. LOS FOTOGRAMAS
+   Los mismos dos @keyframes de la Clase 5, sin tocar una coma. Lo que cambió es cómo se
+   aplican: en el @theme del HTML están registrados como --animate-aparecer y
+   --animate-latido, y eso genera las utilidades `animate-aparecer` y `animate-latido`.
+   ============================================================ */
 @keyframes aparecer {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
